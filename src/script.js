@@ -1,3 +1,18 @@
+function getConfigFileExtension(webserver) {
+  switch (webserver) {
+    case "apache":
+      return "conf";
+    case "nginx":
+      return "conf";
+    case "lighttpd":
+      return "conf";
+    case "caddy":
+      return "caddyfile";
+    default:
+      return "txt";
+  }
+}
+
 function calculateAndUpdateUI() {
   const webserver = document.getElementById("webserver").value;
   const connections =
@@ -398,11 +413,12 @@ example.com {
 
   document.getElementById("results").classList.remove("hidden");
 
-  // Add download functionality
+  // Updated download functionality
+  const fileExtension = getConfigFileExtension(webserver);
   const blob = new Blob([config], { type: "text/plain;charset=utf-8" });
   const downloadLink = document.createElement("a");
   downloadLink.href = URL.createObjectURL(blob);
-  downloadLink.download = `${webserver}_config.txt`;
+  downloadLink.download = `${webserver}_config.${fileExtension}`;
   downloadLink.textContent = "Download Configuration";
   downloadLink.classList.add(
     "bg-green-500",

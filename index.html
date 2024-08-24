@@ -4,8 +4,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Webserver Resource Calculator and Config Generator</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <title>Webserver Resource Calculator and Config Generator | Gabriel Kanev</title>
+    <meta name="description"
+      content="Calculate resource usage and generate optimized configurations for Apache, Nginx, Lighttpd, and Caddy web servers. Improve your web server performance with our free tool.">
+  
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://webserver.gkanev.com/">
+    <meta property="og:title" content="Webserver Resource Calculator and Config Generator">
+    <meta property="og:description"
+      content="Optimize your web server setup with our free resource calculator and configuration generator for Apache, Nginx, Lighttpd, and Caddy.">
+    <meta property="og:image" content="https://webserver.gkanev.com/og-image.jpg">
+  
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://webserver.gkanev.com/">
+    <meta property="twitter:title" content="Webserver Resource Calculator and Config Generator">
+    <meta property="twitter:description"
+      content="Optimize your web server setup with our free resource calculator and configuration generator for Apache, Nginx, Lighttpd, and Caddy.">
+    <meta property="twitter:image" content="https://webserver.gkanev.com/twitter-image.jpg">
+  
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://webserver.gkanev.com/">
+  
+    <!-- Favicon -->
+    <!-- <link rel="icon" type="image/png" href="/favicon.png"> -->
+  
+    <!-- Additional SEO-friendly meta tags -->
+    <meta name="author" content="Gabriel Kanev">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords"
+      content="webserver, resource calculator, config generator, Apache, Nginx, Lighttpd, Caddy, performance optimization">
+      <link href="src/output.css" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100 flex flex-col min-h-screen">
@@ -81,47 +115,55 @@
       <div class="w-full md:w-1/3 px-3">
         <div class="bg-white p-6 rounded-lg shadow-md">
           <h2 class="text-2xl font-bold mb-6">Webserver Tutorials</h2>
-
           <div class="space-y-4">
             <div>
               <h3 class="text-lg font-semibold mb-2">Apache</h3>
-              <ul class="list-disc pl-5">
-                <li><a href="#" class="text-blue-500 hover:underline">Getting Started with Apache</a></li>
-                <li><a href="#" class="text-blue-500 hover:underline">Apache Performance Tuning</a></li>
-                <li><a href="#" class="text-blue-500 hover:underline">Securing Apache Server</a></li>
+              <ul>
+                <li><a href="https://httpd.apache.org/docs/2.4/getting-started.html"
+                    class="text-blue-500 hover:underline">Getting Started with Apache</a></li>
+                <li><a href="https://httpd.apache.org/docs/2.4/misc/perf-tuning.html"
+                    class="text-blue-500 hover:underline">Apache Performance Tuning</a></li>
+                <li><a href="https://httpd.apache.org/docs/2.4/misc/security_tips.html"
+                    class="text-blue-500 hover:underline">Securing Apache Server</a></li>
               </ul>
             </div>
-
             <div>
               <h3 class="text-lg font-semibold mb-2">Nginx</h3>
-              <ul class="list-disc pl-5">
-                <li><a href="#" class="text-blue-500 hover:underline">Nginx Basics</a></li>
-                <li><a href="#" class="text-blue-500 hover:underline">Optimizing Nginx for High Traffic</a></li>
-                <li><a href="#" class="text-blue-500 hover:underline">Nginx as a Reverse Proxy</a></li>
+              <ul>
+                <li><a href="https://nginx.org/en/docs/beginners_guide.html" class="text-blue-500 hover:underline">Nginx
+                    Basics</a></li>
+                <li><a href="https://www.nginx.com/blog/tuning-nginx/" class="text-blue-500 hover:underline">Optimizing Nginx
+                    for High Traffic</a></li>
+                <li><a href="https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/"
+                    class="text-blue-500 hover:underline">Nginx as a Reverse Proxy</a></li>
               </ul>
             </div>
-
             <div>
               <h3 class="text-lg font-semibold mb-2">Lighttpd</h3>
-              <ul class="list-disc pl-5">
-                <li><a href="#" class="text-blue-500 hover:underline">Introduction to Lighttpd</a></li>
-                <li><a href="#" class="text-blue-500 hover:underline">Lighttpd Configuration Guide</a></li>
-                <li><a href="#" class="text-blue-500 hover:underline">Lighttpd vs Apache vs Nginx</a></li>
+              <ul>
+                <li><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/TutorialConfiguration"
+                    class="text-blue-500 hover:underline">Introduction to Lighttpd</a></li>
+                <li><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_ConfigurationOptions"
+                    class="text-blue-500 hover:underline">Lighttpd Configuration Guide</a></li>
+                <li><a href="https://www.digitalocean.com/community/tutorials/apache-vs-nginx-practical-considerations"
+                    class="text-blue-500 hover:underline">Lighttpd vs Apache vs Nginx</a></li>
               </ul>
             </div>
-
             <div>
               <h3 class="text-lg font-semibold mb-2">Caddy</h3>
-              <ul class="list-disc pl-5">
-                <li><a href="#" class="text-blue-500 hover:underline">Getting Started with Caddy</a></li>
-                <li><a href="#" class="text-blue-500 hover:underline">Caddy vs Other Web Servers</a></li>
-                <li><a href="#" class="text-blue-500 hover:underline">Securing Your Site with Caddy</a></li>
+              <ul>
+                <li><a href="https://caddyserver.com/docs/getting-started" class="text-blue-500 hover:underline">Getting Started
+                    with Caddy</a></li>
+                <li><a href="https://caddyserver.com/docs/compare" class="text-blue-500 hover:underline">Caddy vs Other Web
+                    Servers</a></li>
+                <li><a href="https://caddyserver.com/docs/automatic-https" class="text-blue-500 hover:underline">Securing Your
+                    Site with Caddy</a></li>
               </ul>
             </div>
           </div>
         </div>
 
-        <!-- Footer moved here -->
+        <!-- Footer -->
         <div class="bg-white p-4 mt-6 rounded-lg">
           <p class="text-center">Created by <a href="https://gkanev.com/" class="text-blue-500 hover:underline">Gabriel
               Kanev</a></p>
