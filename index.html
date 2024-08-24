@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webserver Resource Calculator and Config Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8 text-center">Webserver Resource Calculator and Config Generator</h1>
+
+    <div class="flex flex-wrap -mx-3">
+      <!-- Calculator Section -->
+      <div class="w-full md:w-2/3 px-3 mb-6">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h2 class="text-2xl font-bold mb-6">Calculator</h2>
+
+          <div class="mb-4">
+            <label for="webserver" class="block mb-2">Select Webserver:</label>
+            <select id="webserver" class="w-full p-2 border rounded">
+              <option value="apache">Apache</option>
+              <option value="nginx">Nginx</option>
+              <option value="lighttpd">Lighttpd</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label for="connections" class="block mb-2">Concurrent Connections:</label>
+            <input type="number" id="connections" class="w-full p-2 border rounded" min="1">
+          </div>
+
+          <div class="mb-4">
+            <label for="workers" class="block mb-2">Number of Workers/Processes:</label>
+            <input type="number" id="workers" class="w-full p-2 border rounded" min="1">
+          </div>
+
+          <div class="mb-4">
+            <label for="memory" class="block mb-2">Available Memory (MB):</label>
+            <input type="number" id="memory" class="w-full p-2 border rounded" min="1">
+          </div>
+
+          <div class="mb-4">
+            <label for="cpu_cores" class="block mb-2">Number of CPU Cores:</label>
+            <input type="number" id="cpu_cores" class="w-full p-2 border rounded" min="1">
+          </div>
+
+          <button id="calculate" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Calculate and
+            Generate Config</button>
+
+          <div id="results" class="mt-6 hidden">
+            <h3 class="text-xl font-semibold mb-2">Estimated Resource Usage:</h3>
+            <p>Memory: <span id="memory-usage"></span> MB</p>
+            <p>CPU: <span id="cpu-usage"></span>% (of a single core)</p>
+
+            <h3 class="text-xl font-semibold mt-4 mb-2">Recommendations:</h3>
+            <div id="recommendations" class="space-y-2"></div>
+
+            <h3 class="text-xl font-semibold mt-4 mb-2">Sample Configuration:</h3>
+            <pre id="config" class="bg-gray-100 p-4 rounded overflow-x-auto"></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tutorial Section -->
+      <div class="w-full md:w-1/3 px-3">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h2 class="text-2xl font-bold mb-6">Webserver Tutorials</h2>
+
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Apache</h3>
+              <ul class="list-disc pl-5">
+                <li><a href="#" class="text-blue-500 hover:underline">Getting Started with Apache</a></li>
+                <li><a href="#" class="text-blue-500 hover:underline">Apache Performance Tuning</a></li>
+                <li><a href="#" class="text-blue-500 hover:underline">Securing Apache Server</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Nginx</h3>
+              <ul class="list-disc pl-5">
+                <li><a href="#" class="text-blue-500 hover:underline">Nginx Basics</a></li>
+                <li><a href="#" class="text-blue-500 hover:underline">Optimizing Nginx for High Traffic</a></li>
+                <li><a href="#" class="text-blue-500 hover:underline">Nginx as a Reverse Proxy</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Lighttpd</h3>
+              <ul class="list-disc pl-5">
+                <li><a href="#" class="text-blue-500 hover:underline">Introduction to Lighttpd</a></li>
+                <li><a href="#" class="text-blue-500 hover:underline">Lighttpd Configuration Guide</a></li>
+                <li><a href="#" class="text-blue-500 hover:underline">Lighttpd vs Apache vs Nginx</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="src/script.js"></script>
+</body>
+
+</html>
