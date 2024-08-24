@@ -8,8 +8,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100">
-  <div class="container mx-auto px-4 py-8">
+<body class="bg-gray-100 flex flex-col min-h-screen">
+  <div class="container mx-auto px-4 py-8 flex-grow">
     <h1 class="text-3xl font-bold mb-8 text-center">Webserver Resource Calculator and Config Generator</h1>
 
     <div class="flex flex-wrap -mx-3">
@@ -24,6 +24,7 @@
               <option value="apache">Apache</option>
               <option value="nginx">Nginx</option>
               <option value="lighttpd">Lighttpd</option>
+              <option value="caddy">Caddy</option>
             </select>
           </div>
 
@@ -47,19 +48,31 @@
             <input type="number" id="cpu_cores" class="w-full p-2 border rounded" min="1">
           </div>
 
-          <button id="calculate" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Calculate and
-            Generate Config</button>
+          <div class="mb-4">
+            <label for="php_version" class="block mb-2">PHP Version:</label>
+            <select id="php_version" class="w-full p-2 border rounded">
+              <option value="none">None</option>
+              <option value="5.6">5.6</option>
+              <option value="7.0">7.0</option>
+              <option value="7.4">7.4</option>
+              <option value="8.0">8.0</option>
+              <option value="8.1">8.1</option>
+              <option value="8.2">8.2</option>
+            </select>
+          </div>
 
           <div id="results" class="mt-6 hidden">
             <h3 class="text-xl font-semibold mb-2">Estimated Resource Usage:</h3>
             <p>Memory: <span id="memory-usage"></span> MB</p>
-            <p>CPU: <span id="cpu-usage"></span>% (of a single core)</p>
+            <p>CPU: <span id="cpu-usage"></span>% (across all cores)</p>
 
             <h3 class="text-xl font-semibold mt-4 mb-2">Recommendations:</h3>
             <div id="recommendations" class="space-y-2"></div>
 
             <h3 class="text-xl font-semibold mt-4 mb-2">Sample Configuration:</h3>
             <pre id="config" class="bg-gray-100 p-4 rounded overflow-x-auto"></pre>
+
+            <div id="download-container" class="mt-4"></div>
           </div>
         </div>
       </div>
@@ -96,7 +109,24 @@
                 <li><a href="#" class="text-blue-500 hover:underline">Lighttpd vs Apache vs Nginx</a></li>
               </ul>
             </div>
+
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Caddy</h3>
+              <ul class="list-disc pl-5">
+                <li><a href="#" class="text-blue-500 hover:underline">Getting Started with Caddy</a></li>
+                <li><a href="#" class="text-blue-500 hover:underline">Caddy vs Other Web Servers</a></li>
+                <li><a href="#" class="text-blue-500 hover:underline">Securing Your Site with Caddy</a></li>
+              </ul>
+            </div>
           </div>
+        </div>
+
+        <!-- Footer moved here -->
+        <div class="bg-white p-4 mt-6 rounded-lg">
+          <p class="text-center">Created by <a href="https://gkanev.com/" class="text-blue-500 hover:underline">Gabriel
+              Kanev</a></p>
+          <p class="text-center mt-2">This project is open source. Contribute on <a
+              href="https://github.com/MrGKanev/webserver" class="text-blue-500 hover:underline">GitHub</a></p>
         </div>
       </div>
     </div>

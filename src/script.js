@@ -1,9 +1,12 @@
-document.getElementById("calculate").addEventListener("click", function () {
+function calculateAndUpdateUI() {
   const webserver = document.getElementById("webserver").value;
-  const connections = parseInt(document.getElementById("connections").value);
-  const workers = parseInt(document.getElementById("workers").value);
-  const availableMemory = parseInt(document.getElementById("memory").value);
-  const cpuCores = parseInt(document.getElementById("cpu_cores").value);
+  const connections =
+    parseInt(document.getElementById("connections").value) || 0;
+  const workers = parseInt(document.getElementById("workers").value) || 0;
+  const availableMemory =
+    parseInt(document.getElementById("memory").value) || 0;
+  const cpuCores = parseInt(document.getElementById("cpu_cores").value) || 1;
+  const phpVersion = document.getElementById("php_version").value;
 
   let memoryPerWorker, memoryPerConnection, cpuPerConnection;
   let recommendations = [];
@@ -36,12 +39,18 @@ document.getElementById("calculate").addEventListener("click", function () {
       );
       config = `
 # Apache configuration
+ServerRoot "/etc/apache2"
+ServerAdmin webmaster@localhost
+ServerName example.com
+
+# Performance settings
 ServerLimit ${workers}
 MaxRequestWorkers ${maxClients}
 KeepAlive On
 KeepAliveTimeout 5
 MaxKeepAliveRequests 100
 
+# MPM settings
 <IfModule mpm_event_module>
     StartServers ${Math.min(2, workers)}
     MinSpareThreads 75
@@ -50,6 +59,17 @@ MaxKeepAliveRequests 100
     MaxRequestWorkers ${maxClients}
     MaxConnectionsPerChild 0
 </IfModule>
+
+# PHP configuration
+${
+  phpVersion !== "none"
+    ? `
+<FilesMatch \\.php$>
+    SetHandler application/x-httpd-php${phpVersion}
+</FilesMatch>
+`
+    : "# PHP is not enabled"
+}
 
 # Enable/Disable modules
 LoadModule deflate_module modules/mod_deflate.so
@@ -78,6 +98,23 @@ LoadModule headers_module modules/mod_headers.so
     ExpiresByType image/x-icon "access plus 1 year"
     ExpiresDefault "access plus 2 days"
 </IfModule>
+
+# Security settings
+ServerTokens Prod
+ServerSignature Off
+TraceEnable Off
+
+# Virtual Host configuration
+<VirtualHost *:80>
+    DocumentRoot /var/www/html
+    <Directory /var/www/html>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+    ErrorLog /var/log/apache2/error.log
+    CustomLog /var/log/apache2/access.log combined
+</VirtualHost>
       `;
       break;
     case "nginx":
@@ -124,50 +161,48 @@ http {
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
 
-    # Enable Gzip compression
+    # Logging settings
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    # Gzip settings
     gzip on;
     gzip_vary on;
     gzip_proxied any;
     gzip_comp_level 6;
-    gzip_buffers 16 8k;
-    gzip_http_version 1.1;
     gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
-
-    # Logging settings
-    access_log /var/log/nginx/access.log;
-    error_log /var/log/nginx/error.log;
 
     # SSL settings
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;
 
-    # Load balancing example (uncomment and modify as needed)
-    # upstream backend {
-    #     server backend1.example.com;
-    #     server backend2.example.com;
-    # }
-
     server {
         listen 80;
         server_name example.com;
         root /var/www/html;
-        index index.html index.htm;
+
+        index index.html index.htm ${phpVersion !== "none" ? "index.php" : ""};
 
         location / {
             try_files $uri $uri/ =404;
         }
 
-        # Example of reverse proxy (uncomment and modify as needed)
-        # location /api/ {
-        #     proxy_pass http://backend;
-        #     proxy_set_header Host $host;
-        #     proxy_set_header X-Real-IP $remote_addr;
-        # }
+        ${
+          phpVersion !== "none"
+            ? `
+        # PHP configuration
+        location ~ \\.php$ {
+            fastcgi_pass unix:/var/run/php/php${phpVersion}-fpm.sock;
+            fastcgi_index index.php;
+            include fastcgi_params;
+        }
+        `
+            : "# PHP is not enabled"
+        }
 
-        # Enable caching for static files
-        location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
-            expires 30d;
-            add_header Cache-Control "public, no-transform";
+        # Deny access to .htaccess files
+        location ~ /\\.ht {
+            deny all;
         }
     }
 }
@@ -196,8 +231,10 @@ server.modules = (
     "mod_compress",
     "mod_redirect",
     "mod_rewrite",
+    ${phpVersion !== "none" ? '"mod_fastcgi",' : ""}
 )
 
+# Server settings
 server.document-root        = "/var/www/html"
 server.upload-dirs          = ( "/var/cache/lighttpd/uploads" )
 server.errorlog             = "/var/log/lighttpd/error.log"
@@ -206,14 +243,14 @@ server.username             = "www-data"
 server.groupname            = "www-data"
 server.port                 = 80
 
-# Configure max connections and file descriptors
+# Performance settings
 server.max-connections = ${connections}
 server.max-fds = ${connections + 100}
-
-# Configure worker processes (if using lighttpd 1.4.46+)
 server.workers = ${workers}
 
-index-file.names            = ( "index.php", "index.html", "index.lighttpd.html" )
+index-file.names            = ( "index.html", "index.htm", ${
+        phpVersion !== "none" ? '"index.php",' : ""
+      } )
 url.access-deny             = ( "~", ".inc" )
 static-file.exclude-extensions = ( ".php", ".pl", ".fcgi" )
 
@@ -221,36 +258,19 @@ static-file.exclude-extensions = ( ".php", ".pl", ".fcgi" )
 compress.cache-dir          = "/var/cache/lighttpd/compress/"
 compress.filetype           = ( "application/javascript", "text/css", "text/html", "text/plain" )
 
-# Enable mod_rewrite
-url.rewrite-once = (
-    "^/(css|js|images)/(.*)" => "$0",
-    "^/(favicon\\.ico|robots\\.txt|sitemap\\.xml)$" => "$0",
-    "^/([^\\?]*)(\\?(.+))?$" => "/index.php?page=$1&$3"
+${
+  phpVersion !== "none"
+    ? `
+# PHP configuration
+fastcgi.server = ( ".php" =>
+    ((
+        "socket" => "/var/run/php/php${phpVersion}-fpm.sock",
+        "broken-scriptfilename" => "enable"
+    ))
 )
-
-# Expire headers for static content
-$HTTP["url"] =~ "\\.(jpg|jpeg|gif|png|css|js)$" {
-    expire.url = ( "" => "access plus 1 months" )
+`
+    : "# PHP is not enabled"
 }
-
-# Enable PHP (if needed)
-# fastcgi.server = ( ".php" =>
-#     ((
-#         "socket" => "/var/run/php/php7.4-fpm.sock",
-#         "broken-scriptfilename" => "enable"
-#     ))
-# )
-
-# SSL Configuration (if needed)
-# $SERVER["socket"] == ":443" {
-#     ssl.engine = "enable"
-#     ssl.pemfile = "/etc/lighttpd/certs/example.com.pem"
-#     ssl.ca-file = "/etc/lighttpd/certs/ca.crt"
-# }
-
-# Enable mod_status
-status.status-url = "/server-status"
-status.config-url = "/server-config"
 
 # Custom error pages
 server.errorfile-prefix = "/var/www/errors/status-"
@@ -259,11 +279,112 @@ server.errorfile-prefix = "/var/www/errors/status-"
 dir-listing.activate = "disable"
       `;
       break;
+    case "caddy":
+      memoryPerWorker = 15;
+      memoryPerConnection = 0.3;
+      cpuPerConnection = 0.03;
+      recommendations = [
+        `Caddy is designed for ease of use and automatic HTTPS.`,
+        `The file_server directive is efficient for serving static content.`,
+        `Use reverse_proxy for load balancing and proxying to backend services.`,
+        `Caddy's automatic HTTPS is a powerful feature for securing your site.`,
+      ];
+      if (workers !== cpuCores) {
+        recommendations.push(
+          `Caddy automatically adjusts to use available CPU cores, but you can fine-tune with the 'workers' global option if needed.`
+        );
+      }
+
+      config = `
+# Caddy configuration
+
+# Global options
+{
+    # Define the email address for ACME registration (for automatic HTTPS)
+    email your.email@example.com
+
+    # Set the number of worker threads
+    workers ${workers}
+
+    # Enable HTTP/3
+    servers {
+        protocols h1 h2 h3
+    }
+
+    # Set up logging for errors
+    log {
+        output file /var/log/caddy/error.log {
+            roll_keep 5
+            roll_size 10mb
+            roll_uncompressed
+        }
+        level ERROR
+    }
+}
+
+# Site configuration
+example.com {
+    # Serve files from the root directory
+    root * /var/www/example.com
+
+    # Enable compression for better performance
+    encode gzip zstd
+
+    # Try to serve static files, fallback to index.html
+    try_files {path} /index.html
+
+    # Serve static files
+    file_server
+
+    ${
+      phpVersion !== "none"
+        ? `
+    # PHP configuration
+    php_fastcgi unix//var/run/php/php${phpVersion}-fpm.sock
+    `
+        : "# PHP is not enabled"
+    }
+
+    # Example reverse proxy to a backend service (uncomment if needed)
+    # reverse_proxy /api/* 127.0.0.1:8080
+
+    # Example redirection rule (uncomment if needed)
+    # @old {
+    #     path_regexp ^/old-path/(.*)
+    # }
+    # redir @old /new-path/{re.path.1} permanent
+
+    # Custom error handling
+    handle_errors {
+        @404 {
+            expression {http.error.status_code} == 404
+        }
+        respond @404 "Custom 404 Page" 404
+    }
+
+    # Logging configuration for access logs
+    log {
+        output file /var/log/caddy/access.log {
+            roll_keep 7
+            roll_size 10mb
+            roll_uncompressed
+        }
+        format single_field common_log
+    }
+}
+
+# Redirect HTTP to HTTPS (optional, uncomment if needed)
+# http://example.com {
+#     redir https://example.com{uri} permanent
+# }
+  `;
+      break;
   }
 
   const totalMemory =
     workers * memoryPerWorker + connections * memoryPerConnection;
-  const totalCpu = Math.min(100, connections * cpuPerConnection * 100);
+  const totalCpuPerCore = connections * cpuPerConnection * 100;
+  const totalCpu = Math.min(100, totalCpuPerCore / cpuCores);
 
   document.getElementById("memory-usage").textContent = totalMemory.toFixed(2);
   document.getElementById("cpu-usage").textContent = totalCpu.toFixed(2);
@@ -276,4 +397,48 @@ dir-listing.activate = "disable"
   document.getElementById("config").textContent = config.trim();
 
   document.getElementById("results").classList.remove("hidden");
-});
+
+  // Add download functionality
+  const blob = new Blob([config], { type: "text/plain;charset=utf-8" });
+  const downloadLink = document.createElement("a");
+  downloadLink.href = URL.createObjectURL(blob);
+  downloadLink.download = `${webserver}_config.txt`;
+  downloadLink.textContent = "Download Configuration";
+  downloadLink.classList.add(
+    "bg-green-500",
+    "text-white",
+    "px-4",
+    "py-2",
+    "rounded",
+    "hover:bg-green-600",
+    "mt-4",
+    "inline-block"
+  );
+
+  const downloadContainer = document.getElementById("download-container");
+  downloadContainer.innerHTML = "";
+  downloadContainer.appendChild(downloadLink);
+}
+
+// Add event listeners to all input fields
+document
+  .getElementById("webserver")
+  .addEventListener("change", calculateAndUpdateUI);
+document
+  .getElementById("connections")
+  .addEventListener("input", calculateAndUpdateUI);
+document
+  .getElementById("workers")
+  .addEventListener("input", calculateAndUpdateUI);
+document
+  .getElementById("memory")
+  .addEventListener("input", calculateAndUpdateUI);
+document
+  .getElementById("cpu_cores")
+  .addEventListener("input", calculateAndUpdateUI);
+document
+  .getElementById("php_version")
+  .addEventListener("change", calculateAndUpdateUI);
+
+// Initial calculation
+calculateAndUpdateUI();
