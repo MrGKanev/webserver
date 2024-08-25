@@ -1,21 +1,43 @@
 function getConfigFileExtension(webserver) {
   switch (webserver) {
-    case "apache":
-      return "conf";
-    case "nginx":
-      return "conf";
-    case "lighttpd":
-      return "conf";
-    case "caddy":
-      return "caddyfile";
-    default:
-      return "txt";
+    case "apache": return "conf";
+    case "nginx": return "conf";
+    case "lighttpd": return "conf";
+    case "caddy": return "caddyfile";
+    default: return "txt";
+  }
+}
+
+function isValidDomain(domain) {
+  // Simple regex for domain validation
+  const domainRegex = /^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$/i;
+  return domainRegex.test(domain);
+}
+
+function autoCompleteEmail() {
+  const domainInput = document.getElementById("domain");
+  const emailInput = document.getElementById("email");
+  
+  const domain = domainInput.value.trim();
+  if (domain) {
+    // Remove 'http://', 'https://', and 'www.' if present
+    const cleanDomain = domain.replace(/^(https?:\/\/)?(www\.)?/, '');
+    if (isValidDomain(cleanDomain)) {
+      emailInput.value = `admin@${cleanDomain}`;
+      domainInput.classList.remove('border-red-500');
+    } else {
+      emailInput.value = '';
+      domainInput.classList.add('border-red-500');
+    }
+  } else {
+    emailInput.value = '';
+    domainInput.classList.remove('border-red-500');
   }
 }
 
 function calculateAndUpdateUI() {
   const webserver = document.getElementById("webserver").value;
-  const domain = document.getElementById("domain").value || "example.com";
+  const domain = document.getElementById("domain").value.trim();
   const email = document.getElementById("email").value || "admin@example.com";
   const connections =
     parseInt(document.getElementById("connections").value) || 0;
@@ -24,6 +46,11 @@ function calculateAndUpdateUI() {
     parseInt(document.getElementById("memory").value) || 0;
   const cpuCores = parseInt(document.getElementById("cpu_cores").value) || 1;
   const phpVersion = document.getElementById("php_version").value;
+
+  if (!isValidDomain(domain)) {
+    document.getElementById("results").classList.add("hidden");
+    return;
+  }
 
   let memoryPerWorker, memoryPerConnection, cpuPerConnection;
   let recommendations = [];
@@ -473,14 +500,14 @@ www.${domain} {
   downloadContainer.appendChild(downloadLink);
 }
 
-
 // Add event listeners to all input fields
 document
   .getElementById("webserver")
   .addEventListener("change", calculateAndUpdateUI);
-document
-  .getElementById("domain")
-  .addEventListener("input", calculateAndUpdateUI);
+document.getElementById("domain").addEventListener("input", function () {
+  autoCompleteEmail();
+  calculateAndUpdateUI();
+});
 document
   .getElementById("email")
   .addEventListener("input", calculateAndUpdateUI);
