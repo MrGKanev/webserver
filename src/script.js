@@ -15,6 +15,8 @@ function getConfigFileExtension(webserver) {
 
 function calculateAndUpdateUI() {
   const webserver = document.getElementById("webserver").value;
+  const domain = document.getElementById("domain").value || "example.com";
+  const email = document.getElementById("email").value || "admin@example.com";
   const connections =
     parseInt(document.getElementById("connections").value) || 0;
   const workers = parseInt(document.getElementById("workers").value) || 0;
@@ -27,11 +29,16 @@ function calculateAndUpdateUI() {
   let recommendations = [];
   let config = "";
 
+  // Adjust resource requirements if PHP is enabled
+  const phpEnabled = phpVersion !== "none";
+  const phpMemoryOverhead = phpEnabled ? 20 : 0; // Additional 20MB per worker if PHP is enabled
+  const phpCpuOverhead = phpEnabled ? 0.05 : 0; // Additional 5% CPU usage per connection if PHP is enabled
+
   switch (webserver) {
     case "apache":
-      memoryPerWorker = 20;
+      memoryPerWorker = 20 + phpMemoryOverhead;
       memoryPerConnection = 0.5;
-      cpuPerConnection = 0.05;
+      cpuPerConnection = 0.05 + phpCpuOverhead;
       recommendations = [
         `For Apache, consider using the event MPM for better scalability.`,
         `Optimize your Apache configuration by disabling unnecessary modules.`,
@@ -47,6 +54,11 @@ function calculateAndUpdateUI() {
           `For high traffic, consider tuning your kernel parameters, especially the max open files limit.`
         );
       }
+      if (phpEnabled) {
+        recommendations.push(
+          `With PHP enabled, monitor your memory usage closely and consider increasing available memory if needed.`
+        );
+      }
 
       const maxClients = Math.min(
         connections,
@@ -55,8 +67,8 @@ function calculateAndUpdateUI() {
       config = `
 # Apache configuration
 ServerRoot "/etc/apache2"
-ServerAdmin webmaster@localhost
-ServerName example.com
+ServerAdmin ${email}
+ServerName ${domain}
 
 # Performance settings
 ServerLimit ${workers}
@@ -77,7 +89,7 @@ MaxKeepAliveRequests 100
 
 # PHP configuration
 ${
-  phpVersion !== "none"
+  phpEnabled
     ? `
 <FilesMatch \\.php$>
     SetHandler application/x-httpd-php${phpVersion}
@@ -121,6 +133,8 @@ TraceEnable Off
 
 # Virtual Host configuration
 <VirtualHost *:80>
+    ServerName ${domain}
+    ServerAlias www.${domain}
     DocumentRoot /var/www/html
     <Directory /var/www/html>
         Options Indexes FollowSymLinks
@@ -133,9 +147,9 @@ TraceEnable Off
       `;
       break;
     case "nginx":
-      memoryPerWorker = 10;
+      memoryPerWorker = 10 + phpMemoryOverhead;
       memoryPerConnection = 0.25;
-      cpuPerConnection = 0.025;
+      cpuPerConnection = 0.025 + phpCpuOverhead;
       recommendations = [
         `Nginx is efficient for serving static content and as a reverse proxy.`,
         `Consider enabling Gzip compression for better performance.`,
@@ -149,6 +163,11 @@ TraceEnable Off
       if (connections > 10000) {
         recommendations.push(
           `For very high traffic, consider using the 'reuseport' option to distribute incoming connections.`
+        );
+      }
+      if (phpEnabled) {
+        recommendations.push(
+          `With PHP-FPM enabled, monitor your PHP worker processes and adjust pm.max_children if needed.`
         );
       }
 
@@ -193,17 +212,17 @@ http {
 
     server {
         listen 80;
-        server_name example.com;
+        server_name ${domain} www.${domain};
         root /var/www/html;
 
-        index index.html index.htm ${phpVersion !== "none" ? "index.php" : ""};
+        index index.html index.htm ${phpEnabled ? "index.php" : ""};
 
         location / {
             try_files $uri $uri/ =404;
         }
 
         ${
-          phpVersion !== "none"
+          phpEnabled
             ? `
         # PHP configuration
         location ~ \\.php$ {
@@ -224,9 +243,9 @@ http {
       `;
       break;
     case "lighttpd":
-      memoryPerWorker = 5;
+      memoryPerWorker = 5 + phpMemoryOverhead;
       memoryPerConnection = 0.2;
-      cpuPerConnection = 0.02;
+      cpuPerConnection = 0.02 + phpCpuOverhead;
       recommendations = [
         `Lighttpd is great for serving static content on low-resource systems.`,
         `Consider using mod_magnet for more advanced request handling if needed.`,
@@ -235,6 +254,11 @@ http {
       if (connections > 500) {
         recommendations.push(
           `For higher traffic, consider increasing the 'max-fds' and 'server.max-connections' settings.`
+        );
+      }
+      if (phpEnabled) {
+        recommendations.push(
+          `With PHP enabled, monitor your FastCGI processes and adjust their number if needed.`
         );
       }
 
@@ -246,7 +270,7 @@ server.modules = (
     "mod_compress",
     "mod_redirect",
     "mod_rewrite",
-    ${phpVersion !== "none" ? '"mod_fastcgi",' : ""}
+    ${phpEnabled ? '"mod_fastcgi",' : ""}
 )
 
 # Server settings
@@ -264,7 +288,7 @@ server.max-fds = ${connections + 100}
 server.workers = ${workers}
 
 index-file.names            = ( "index.html", "index.htm", ${
-        phpVersion !== "none" ? '"index.php",' : ""
+        phpEnabled ? '"index.php",' : ""
       } )
 url.access-deny             = ( "~", ".inc" )
 static-file.exclude-extensions = ( ".php", ".pl", ".fcgi" )
@@ -274,7 +298,7 @@ compress.cache-dir          = "/var/cache/lighttpd/compress/"
 compress.filetype           = ( "application/javascript", "text/css", "text/html", "text/plain" )
 
 ${
-  phpVersion !== "none"
+  phpEnabled
     ? `
 # PHP configuration
 fastcgi.server = ( ".php" =>
@@ -292,12 +316,17 @@ server.errorfile-prefix = "/var/www/errors/status-"
 
 # Disable directory listings
 dir-listing.activate = "disable"
+
+# Domain configuration
+$HTTP["host"] =~ "^(www\\.)?${domain.replace(/\./g, "\\.")}$" {
+    server.document-root = "/var/www/${domain}"
+}
       `;
       break;
     case "caddy":
-      memoryPerWorker = 15;
+      memoryPerWorker = 15 + phpMemoryOverhead;
       memoryPerConnection = 0.3;
-      cpuPerConnection = 0.03;
+      cpuPerConnection = 0.03 + phpCpuOverhead;
       recommendations = [
         `Caddy is designed for ease of use and automatic HTTPS.`,
         `The file_server directive is efficient for serving static content.`,
@@ -309,6 +338,11 @@ dir-listing.activate = "disable"
           `Caddy automatically adjusts to use available CPU cores, but you can fine-tune with the 'workers' global option if needed.`
         );
       }
+      if (phpEnabled) {
+        recommendations.push(
+          `With PHP enabled, ensure your PHP-FPM pool is configured appropriately for your expected traffic.`
+        );
+      }
 
       config = `
 # Caddy configuration
@@ -316,7 +350,7 @@ dir-listing.activate = "disable"
 # Global options
 {
     # Define the email address for ACME registration (for automatic HTTPS)
-    email your.email@example.com
+    email ${email}
 
     # Set the number of worker threads
     workers ${workers}
@@ -338,9 +372,9 @@ dir-listing.activate = "disable"
 }
 
 # Site configuration
-example.com {
+${domain} {
     # Serve files from the root directory
-    root * /var/www/example.com
+    root * /var/www/${domain}
 
     # Enable compression for better performance
     encode gzip zstd
@@ -352,7 +386,7 @@ example.com {
     file_server
 
     ${
-      phpVersion !== "none"
+      phpEnabled
         ? `
     # PHP configuration
     php_fastcgi unix//var/run/php/php${phpVersion}-fpm.sock
@@ -388,10 +422,10 @@ example.com {
     }
 }
 
-# Redirect HTTP to HTTPS (optional, uncomment if needed)
-# http://example.com {
-#     redir https://example.com{uri} permanent
-# }
+# Redirect www to non-www
+www.${domain} {
+    redir https://${domain}{uri} permanent
+}
   `;
       break;
   }
@@ -419,16 +453,19 @@ example.com {
   const downloadLink = document.createElement("a");
   downloadLink.href = URL.createObjectURL(blob);
   downloadLink.download = `${webserver}_config.${fileExtension}`;
-  downloadLink.textContent = "Download Configuration";
+  downloadLink.textContent = "Download";
   downloadLink.classList.add(
-    "bg-green-500",
+    "bg-blue-500",
+    "hover:bg-blue-600",
     "text-white",
-    "px-4",
-    "py-2",
+    "font-semibold",
+    "py-1",
+    "px-3",
     "rounded",
-    "hover:bg-green-600",
-    "mt-4",
-    "inline-block"
+    "text-sm",
+    "inline-block",
+    "transition",
+    "duration-300"
   );
 
   const downloadContainer = document.getElementById("download-container");
@@ -436,10 +473,17 @@ example.com {
   downloadContainer.appendChild(downloadLink);
 }
 
+
 // Add event listeners to all input fields
 document
   .getElementById("webserver")
   .addEventListener("change", calculateAndUpdateUI);
+document
+  .getElementById("domain")
+  .addEventListener("input", calculateAndUpdateUI);
+document
+  .getElementById("email")
+  .addEventListener("input", calculateAndUpdateUI);
 document
   .getElementById("connections")
   .addEventListener("input", calculateAndUpdateUI);

@@ -63,6 +63,16 @@
           </div>
 
           <div class="mb-4">
+            <label for="domain" class="block mb-2">Domain Name:</label>
+            <input type="text" id="domain" class="w-full p-2 border rounded" placeholder="example.com">
+          </div>
+          
+          <div class="mb-4">
+            <label for="email" class="block mb-2">Email Address:</label>
+            <input type="email" id="email" class="w-full p-2 border rounded" placeholder="admin@example.com">
+          </div>
+
+          <div class="mb-4">
             <label for="connections" class="block mb-2">Concurrent Connections:</label>
             <input type="number" id="connections" class="w-full p-2 border rounded" min="1">
           </div>
@@ -92,6 +102,8 @@
               <option value="8.0">8.0</option>
               <option value="8.1">8.1</option>
               <option value="8.2">8.2</option>
+              <option value="8.3">8.3</option>
+              <option value="8.4">8.4</option>
             </select>
           </div>
 
@@ -103,8 +115,13 @@
             <h3 class="text-xl font-semibold mt-4 mb-2">Recommendations:</h3>
             <div id="recommendations" class="space-y-2"></div>
 
-            <h3 class="text-xl font-semibold mt-4 mb-2">Sample Configuration:</h3>
-            <pre id="config" class="bg-gray-100 p-4 rounded overflow-x-auto"></pre>
+          <div class="flex items-center justify-between mt-4 mb-2">
+            <h3 class="text-xl font-semibold">Sample Configuration:</h3>
+            <div id="download-container">
+              <!-- The download button will be inserted here by JavaScript -->
+            </div>
+          </div>
+          <pre id="config" class="bg-gray-100 p-4 rounded overflow-x-auto"></pre>
 
             <div id="download-container" class="mt-4"></div>
           </div>
