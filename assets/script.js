@@ -1,37 +1,43 @@
 function getConfigFileExtension(webserver) {
   switch (webserver) {
-    case "apache": return "conf";
-    case "nginx": return "conf";
-    case "lighttpd": return "conf";
-    case "caddy": return "caddyfile";
-    default: return "txt";
+    case "apache":
+      return "conf";
+    case "nginx":
+      return "conf";
+    case "lighttpd":
+      return "conf";
+    case "caddy":
+      return "caddyfile";
+    default:
+      return "txt";
   }
 }
 
 function isValidDomain(domain) {
   // Simple regex for domain validation
-  const domainRegex = /^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$/i;
+  const domainRegex =
+    /^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$/i;
   return domainRegex.test(domain);
 }
 
 function autoCompleteEmail() {
   const domainInput = document.getElementById("domain");
   const emailInput = document.getElementById("email");
-  
+
   const domain = domainInput.value.trim();
   if (domain) {
     // Remove 'http://', 'https://', and 'www.' if present
-    const cleanDomain = domain.replace(/^(https?:\/\/)?(www\.)?/, '');
+    const cleanDomain = domain.replace(/^(https?:\/\/)?(www\.)?/, "");
     if (isValidDomain(cleanDomain)) {
       emailInput.value = `admin@${cleanDomain}`;
-      domainInput.classList.remove('border-red-500');
+      domainInput.classList.remove("border-red-6");
     } else {
-      emailInput.value = '';
-      domainInput.classList.add('border-red-500');
+      emailInput.value = "";
+      domainInput.classList.add("border-red-6");
     }
   } else {
-    emailInput.value = '';
-    domainInput.classList.remove('border-red-500');
+    emailInput.value = "";
+    domainInput.classList.remove("border-red-6");
   }
 }
 
@@ -482,8 +488,8 @@ www.${domain} {
   downloadLink.download = `${webserver}_config.${fileExtension}`;
   downloadLink.textContent = "Download";
   downloadLink.classList.add(
-    "bg-blue-500",
-    "hover:bg-blue-600",
+    "bg-blue-6",
+    "hover:bg-blue-7",
     "text-white",
     "font-semibold",
     "py-1",
@@ -502,8 +508,15 @@ www.${domain} {
 
 // Add event listeners to all input fields
 document
-  .getElementById("webserver")
+  .getElementById("cpu_cores")
+  .addEventListener("input", calculateAndUpdateUI);
+document
+  .getElementById("php_version")
   .addEventListener("change", calculateAndUpdateUI);
+
+// Initial calculation
+calculateAndUpdateUI();
+d("webserver").addEventListener("change", calculateAndUpdateUI);
 document.getElementById("domain").addEventListener("input", function () {
   autoCompleteEmail();
   calculateAndUpdateUI();
@@ -520,12 +533,4 @@ document
 document
   .getElementById("memory")
   .addEventListener("input", calculateAndUpdateUI);
-document
-  .getElementById("cpu_cores")
-  .addEventListener("input", calculateAndUpdateUI);
-document
-  .getElementById("php_version")
-  .addEventListener("change", calculateAndUpdateUI);
-
-// Initial calculation
-calculateAndUpdateUI();
+document.getElementByI;
