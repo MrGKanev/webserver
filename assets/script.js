@@ -1,37 +1,43 @@
 function getConfigFileExtension(webserver) {
   switch (webserver) {
-    case "apache": return "conf";
-    case "nginx": return "conf";
-    case "lighttpd": return "conf";
-    case "caddy": return "caddyfile";
-    default: return "txt";
+    case "apache":
+      return "conf";
+    case "nginx":
+      return "conf";
+    case "lighttpd":
+      return "conf";
+    case "caddy":
+      return "caddyfile";
+    default:
+      return "txt";
   }
 }
 
 function isValidDomain(domain) {
   // Simple regex for domain validation
-  const domainRegex = /^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$/i;
+  const domainRegex =
+    /^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$/i;
   return domainRegex.test(domain);
 }
 
 function autoCompleteEmail() {
   const domainInput = document.getElementById("domain");
   const emailInput = document.getElementById("email");
-  
+
   const domain = domainInput.value.trim();
   if (domain) {
     // Remove 'http://', 'https://', and 'www.' if present
-    const cleanDomain = domain.replace(/^(https?:\/\/)?(www\.)?/, '');
+    const cleanDomain = domain.replace(/^(https?:\/\/)?(www\.)?/, "");
     if (isValidDomain(cleanDomain)) {
       emailInput.value = `admin@${cleanDomain}`;
-      domainInput.classList.remove('border-red-500');
+      domainInput.classList.remove("border-red-500");
     } else {
-      emailInput.value = '';
-      domainInput.classList.add('border-red-500');
+      emailInput.value = "";
+      domainInput.classList.add("border-red-500");
     }
   } else {
-    emailInput.value = '';
-    domainInput.classList.remove('border-red-500');
+    emailInput.value = "";
+    domainInput.classList.remove("border-red-500");
   }
 }
 

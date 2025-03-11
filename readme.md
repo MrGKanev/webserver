@@ -23,37 +23,18 @@ This project provides a web-based tool for calculating resource usage and genera
 4. View the estimated resource usage, recommendations, and sample configuration.
 5. Download the generated configuration file if desired.
 
-## Development
+## Useful Commands
 
-### Setup
+- Continuously watch for changes in the `style.css` file, updating the output file whenever changes occur.
 
-1. Clone the repository:
-
-   ```
-   git clone https://github.com/MrGKanev/webserver.git
-   cd webserver
-   ```
-
-2. Install dependencies:
-
-   ```
-   npm install
-   ```
-
-3. Run Tailwind CSS in watch mode:
-
-   ```
-   npx tailwindcss -i ./src/input.css -o ./src/output.css --watch
-   ```
-
-4. Open `index.html` in your browser to view the application.
-
-### Building for Production
-
-To generate a minified version of the CSS for production:
-
+```bash
+npx @tailwindcss/cli -i ./s/style.css -o ./assets/style.min.css --watch
 ```
-npx tailwindcss -o ./src/output.css --minify
+
+- Generate a minified version of the CSS
+
+```bash
+npx @tailwindcss/cli -i ./assets/style.css -o ./assets/style.min.css --minify 
 ```
 
 ## Contributing

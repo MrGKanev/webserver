@@ -4,42 +4,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-    <title>Webserver Resource Calculator and Config Generator | Gabriel Kanev</title>
-    <meta name="description"
-      content="Calculate resource usage and generate optimized configurations for Apache, Nginx, Lighttpd, and Caddy web servers. Improve your web server performance with our free tool.">
-  
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://webserver.gkanev.com/">
-    <meta property="og:title" content="Webserver Resource Calculator and Config Generator">
-    <meta property="og:description"
-      content="Optimize your web server setup with our free resource calculator and configuration generator for Apache, Nginx, Lighttpd, and Caddy.">
-    <meta property="og:image" content="https://webserver.gkanev.com/og-image.jpg">
-  
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://webserver.gkanev.com/">
-    <meta property="twitter:title" content="Webserver Resource Calculator and Config Generator">
-    <meta property="twitter:description"
-      content="Optimize your web server setup with our free resource calculator and configuration generator for Apache, Nginx, Lighttpd, and Caddy.">
-    <meta property="twitter:image" content="https://webserver.gkanev.com/twitter-image.jpg">
-  
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://webserver.gkanev.com/">
-  
-    <!-- Favicon -->
-    <!-- <link rel="icon" type="image/png" href="/favicon.png"> -->
-  
-    <!-- Additional SEO-friendly meta tags -->
-    <meta name="author" content="Gabriel Kanev">
-    <meta name="robots" content="index, follow">
-    <meta name="keywords"
-      content="webserver, resource calculator, config generator, Apache, Nginx, Lighttpd, Caddy, performance optimization">
-      <link href="src/output.css" rel="stylesheet">
+  <title>Webserver Resource Calculator and Config Generator | Gabriel Kanev</title>
+  <meta name="description"
+    content="Calculate resource usage and generate optimized configurations for Apache, Nginx, Lighttpd, and Caddy web servers. Improve your web server performance with our free tool.">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://webserver.gkanev.com/">
+  <meta property="og:title" content="Webserver Resource Calculator and Config Generator">
+  <meta property="og:description"
+    content="Optimize your web server setup with our free resource calculator and configuration generator for Apache, Nginx, Lighttpd, and Caddy.">
+  <meta property="og:image" content="https://webserver.gkanev.com/og-image.jpg">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://webserver.gkanev.com/">
+  <meta property="twitter:title" content="Webserver Resource Calculator and Config Generator">
+  <meta property="twitter:description"
+    content="Optimize your web server setup with our free resource calculator and configuration generator for Apache, Nginx, Lighttpd, and Caddy.">
+  <meta property="twitter:image" content="https://webserver.gkanev.com/twitter-image.jpg">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://webserver.gkanev.com/">
+
+  <!-- Additional SEO-friendly meta tags -->
+  <meta name="author" content="Gabriel Kanev">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords"
+    content="webserver, resource calculator, config generator, Apache, Nginx, Lighttpd, Caddy, performance optimization">
+  <link href="assets/style.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100 flex flex-col min-h-screen">
@@ -66,10 +59,11 @@
             <label for="domain" class="block mb-2">Domain Name:</label>
             <input type="text" id="domain" class="w-full p-2 border rounded" placeholder="example.com">
           </div>
-          
+
           <div class="mb-4">
             <label for="email" class="block mb-2">Email Address:</label>
-            <input type="email" id="email" autocomplete="email" class="w-full p-2 border rounded" placeholder="admin@example.com">
+            <input type="email" id="email" autocomplete="email" class="w-full p-2 border rounded"
+              placeholder="admin@example.com">
           </div>
 
           <div class="mb-4">
@@ -115,15 +109,13 @@
             <h3 class="text-xl font-semibold mt-4 mb-2">Recommendations:</h3>
             <div id="recommendations" class="space-y-2"></div>
 
-          <div class="flex items-center justify-between mt-4 mb-2">
-            <h3 class="text-xl font-semibold">Sample Configuration:</h3>
-            <div id="download-container">
-              <!-- The download button will be inserted here by JavaScript -->
+            <div class="flex items-center justify-between mt-4 mb-2">
+              <h3 class="text-xl font-semibold">Sample Configuration:</h3>
+              <div id="download-container">
+                <!-- The download button will be inserted here by JavaScript -->
+              </div>
             </div>
-          </div>
-          <pre id="config" class="bg-gray-100 p-4 rounded overflow-x-auto"></pre>
-
-            <div id="download-container" class="mt-4"></div>
+            <pre id="config" class="bg-gray-100 p-4 rounded overflow-x-auto"></pre>
           </div>
         </div>
       </div>
@@ -149,7 +141,8 @@
               <ul>
                 <li><a href="https://nginx.org/en/docs/beginners_guide.html" class="text-blue-500 hover:underline">Nginx
                     Basics</a></li>
-                <li><a href="https://www.nginx.com/blog/tuning-nginx/" class="text-blue-500 hover:underline">Optimizing Nginx
+                <li><a href="https://www.nginx.com/blog/tuning-nginx/" class="text-blue-500 hover:underline">Optimizing
+                    Nginx
                     for High Traffic</a></li>
                 <li><a href="https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/"
                     class="text-blue-500 hover:underline">Nginx as a Reverse Proxy</a></li>
@@ -169,11 +162,14 @@
             <div>
               <h3 class="text-lg font-semibold mb-2">Caddy</h3>
               <ul>
-                <li><a href="https://caddyserver.com/docs/getting-started" class="text-blue-500 hover:underline">Getting Started
+                <li><a href="https://caddyserver.com/docs/getting-started" class="text-blue-500 hover:underline">Getting
+                    Started
                     with Caddy</a></li>
-                <li><a href="https://caddyserver.com/docs/compare" class="text-blue-500 hover:underline">Caddy vs Other Web
+                <li><a href="https://caddyserver.com/docs/compare" class="text-blue-500 hover:underline">Caddy vs Other
+                    Web
                     Servers</a></li>
-                <li><a href="https://caddyserver.com/docs/automatic-https" class="text-blue-500 hover:underline">Securing Your
+                <li><a href="https://caddyserver.com/docs/automatic-https"
+                    class="text-blue-500 hover:underline">Securing Your
                     Site with Caddy</a></li>
               </ul>
             </div>
@@ -191,7 +187,7 @@
     </div>
   </div>
 
-  <script src="src/script.js"></script>
+  <script src="assets/script.js"></script>
 </body>
 
 </html>
