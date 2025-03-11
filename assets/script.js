@@ -30,14 +30,14 @@ function autoCompleteEmail() {
     const cleanDomain = domain.replace(/^(https?:\/\/)?(www\.)?/, "");
     if (isValidDomain(cleanDomain)) {
       emailInput.value = `admin@${cleanDomain}`;
-      domainInput.classList.remove("border-red-6");
+      domainInput.classList.remove("border-red-500");
     } else {
       emailInput.value = "";
-      domainInput.classList.add("border-red-6");
+      domainInput.classList.add("border-red-500");
     }
   } else {
     emailInput.value = "";
-    domainInput.classList.remove("border-red-6");
+    domainInput.classList.remove("border-red-500");
   }
 }
 
@@ -488,8 +488,8 @@ www.${domain} {
   downloadLink.download = `${webserver}_config.${fileExtension}`;
   downloadLink.textContent = "Download";
   downloadLink.classList.add(
-    "bg-blue-6",
-    "hover:bg-blue-7",
+    "bg-blue-500",
+    "hover:bg-blue-600",
     "text-white",
     "font-semibold",
     "py-1",
@@ -508,15 +508,8 @@ www.${domain} {
 
 // Add event listeners to all input fields
 document
-  .getElementById("cpu_cores")
-  .addEventListener("input", calculateAndUpdateUI);
-document
-  .getElementById("php_version")
+  .getElementById("webserver")
   .addEventListener("change", calculateAndUpdateUI);
-
-// Initial calculation
-calculateAndUpdateUI();
-d("webserver").addEventListener("change", calculateAndUpdateUI);
 document.getElementById("domain").addEventListener("input", function () {
   autoCompleteEmail();
   calculateAndUpdateUI();
@@ -533,4 +526,12 @@ document
 document
   .getElementById("memory")
   .addEventListener("input", calculateAndUpdateUI);
-document.getElementByI;
+document
+  .getElementById("cpu_cores")
+  .addEventListener("input", calculateAndUpdateUI);
+document
+  .getElementById("php_version")
+  .addEventListener("change", calculateAndUpdateUI);
+
+// Initial calculation
+calculateAndUpdateUI();
