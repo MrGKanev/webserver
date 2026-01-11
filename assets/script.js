@@ -1,23 +1,236 @@
-function getConfigFileExtension(webserver) {
-  switch (webserver) {
-    case "apache":
-      return "conf";
-    case "nginx":
-      return "conf";
-    case "lighttpd":
-      return "conf";
-    case "caddy":
-      return "caddyfile";
-    default:
-      return "txt";
+/**
+ * Web Server Resource Calculator
+ * Constants and configuration for server resource calculations
+ */
+
+// Server resource constants (memory in MB, CPU as decimal percentage)
+const SERVER_CONFIGS = {
+  apache: {
+    memoryPerWorker: 20,
+    memoryPerConnection: 0.5,
+    cpuPerConnection: 0.05,
+    fileExtension: "conf",
+    displayName: "Apache HTTP Server"
+  },
+  nginx: {
+    memoryPerWorker: 10,
+    memoryPerConnection: 0.25,
+    cpuPerConnection: 0.025,
+    fileExtension: "conf",
+    displayName: "Nginx"
+  },
+  lighttpd: {
+    memoryPerWorker: 5,
+    memoryPerConnection: 0.2,
+    cpuPerConnection: 0.02,
+    fileExtension: "conf",
+    displayName: "Lighttpd"
+  },
+  caddy: {
+    memoryPerWorker: 15,
+    memoryPerConnection: 0.3,
+    cpuPerConnection: 0.03,
+    fileExtension: "caddyfile",
+    displayName: "Caddy"
   }
+};
+
+// PHP overhead constants
+const PHP_CONFIG = {
+  memoryOverhead: 20,  // Additional MB per worker when PHP is enabled
+  cpuOverhead: 0.05    // Additional CPU percentage per connection
+};
+
+// Input validation limits
+const INPUT_LIMITS = {
+  connections: { min: 1, max: 100000 },
+  workers: { min: 1, max: 256 },
+  memory: { min: 128, max: 1048576 },
+  cpuCores: { min: 1, max: 256 }
+};
+
+// Server presets for common configurations
+const SERVER_PRESETS = {
+  small: {
+    name: "Small VPS",
+    connections: 100,
+    workers: 1,
+    memory: 1024,
+    cpuCores: 1,
+    description: "1 CPU, 1GB RAM - Entry level VPS"
+  },
+  medium: {
+    name: "Medium Server",
+    connections: 500,
+    workers: 4,
+    memory: 4096,
+    cpuCores: 4,
+    description: "4 CPU, 4GB RAM - Standard web server"
+  },
+  large: {
+    name: "Large Server",
+    connections: 2000,
+    workers: 8,
+    memory: 16384,
+    cpuCores: 8,
+    description: "8 CPU, 16GB RAM - High traffic site"
+  },
+  dedicated: {
+    name: "Dedicated",
+    connections: 10000,
+    workers: 16,
+    memory: 65536,
+    cpuCores: 16,
+    description: "16 CPU, 64GB RAM - Dedicated server"
+  }
+};
+
+// Store current blob URL for cleanup
+let currentBlobUrl = null;
+
+function getConfigFileExtension(webserver) {
+  return SERVER_CONFIGS[webserver]?.fileExtension || "txt";
 }
 
 function isValidDomain(domain) {
-  // Simple regex for domain validation
+  if (!domain || typeof domain !== "string") return false;
+  // Improved regex for domain validation
   const domainRegex =
     /^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$/i;
   return domainRegex.test(domain);
+}
+
+function sanitizeInput(value, limits) {
+  const num = parseInt(value) || 0;
+  return Math.max(limits.min, Math.min(limits.max, num));
+}
+
+function cleanupBlobUrl() {
+  if (currentBlobUrl) {
+    URL.revokeObjectURL(currentBlobUrl);
+    currentBlobUrl = null;
+  }
+}
+
+// Apply a server preset
+function applyPreset(presetName) {
+  const preset = SERVER_PRESETS[presetName];
+  if (!preset) return;
+
+  document.getElementById("connections").value = preset.connections;
+  document.getElementById("workers").value = preset.workers;
+  document.getElementById("memory").value = preset.memory;
+  document.getElementById("cpu_cores").value = preset.cpuCores;
+
+  // Update preset button styles
+  document.querySelectorAll(".preset-btn").forEach(btn => {
+    btn.classList.remove("bg-blue-500", "text-white", "border-blue-500");
+    btn.classList.add("bg-gray-100", "border-gray-300");
+  });
+  const activeBtn = document.getElementById(`preset-${presetName}`);
+  if (activeBtn) {
+    activeBtn.classList.remove("bg-gray-100", "border-gray-300");
+    activeBtn.classList.add("bg-blue-500", "text-white", "border-blue-500");
+  }
+
+  calculateAndUpdateUI();
+}
+
+// Copy configuration to clipboard
+function copyConfigToClipboard() {
+  const config = document.getElementById("config").textContent;
+  const copyBtn = document.getElementById("copy-config");
+
+  navigator.clipboard.writeText(config).then(() => {
+    const originalText = copyBtn.textContent;
+    copyBtn.textContent = "Copied!";
+    copyBtn.classList.remove("bg-gray-500");
+    copyBtn.classList.add("bg-green-500");
+
+    setTimeout(() => {
+      copyBtn.textContent = originalText;
+      copyBtn.classList.remove("bg-green-500");
+      copyBtn.classList.add("bg-gray-500");
+    }, 2000);
+  }).catch(() => {
+    copyBtn.textContent = "Failed";
+    setTimeout(() => {
+      copyBtn.textContent = "Copy";
+    }, 2000);
+  });
+}
+
+// Generate shareable URL with current settings
+function generateShareUrl() {
+  const params = new URLSearchParams();
+  params.set("server", document.getElementById("webserver").value);
+  params.set("domain", document.getElementById("domain").value);
+  params.set("email", document.getElementById("email").value);
+  params.set("connections", document.getElementById("connections").value);
+  params.set("workers", document.getElementById("workers").value);
+  params.set("memory", document.getElementById("memory").value);
+  params.set("cpu", document.getElementById("cpu_cores").value);
+  params.set("php", document.getElementById("php_version").value);
+
+  return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+}
+
+// Share configuration link
+function shareConfig() {
+  const shareUrl = generateShareUrl();
+  const notification = document.getElementById("share-notification");
+  const notificationText = notification.querySelector("span");
+
+  navigator.clipboard.writeText(shareUrl).then(() => {
+    if (notificationText) {
+      notificationText.textContent = "Share link copied to clipboard!";
+    } else {
+      notification.textContent = "Share link copied to clipboard!";
+    }
+    notification.classList.remove("hidden");
+
+    setTimeout(() => {
+      notification.classList.add("hidden");
+    }, 3000);
+  }).catch(() => {
+    // Fallback: show the URL for manual copy
+    if (notificationText) {
+      notificationText.textContent = `Share URL: ${shareUrl}`;
+    } else {
+      notification.textContent = `Share URL: ${shareUrl}`;
+    }
+    notification.classList.remove("hidden");
+  });
+}
+
+// Load settings from URL parameters
+function loadFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.has("server")) {
+    document.getElementById("webserver").value = params.get("server");
+  }
+  if (params.has("domain")) {
+    document.getElementById("domain").value = params.get("domain");
+  }
+  if (params.has("email")) {
+    document.getElementById("email").value = params.get("email");
+  }
+  if (params.has("connections")) {
+    document.getElementById("connections").value = params.get("connections");
+  }
+  if (params.has("workers")) {
+    document.getElementById("workers").value = params.get("workers");
+  }
+  if (params.has("memory")) {
+    document.getElementById("memory").value = params.get("memory");
+  }
+  if (params.has("cpu")) {
+    document.getElementById("cpu_cores").value = params.get("cpu");
+  }
+  if (params.has("php")) {
+    document.getElementById("php_version").value = params.get("php");
+  }
 }
 
 function autoCompleteEmail() {
@@ -45,12 +258,24 @@ function calculateAndUpdateUI() {
   const webserver = document.getElementById("webserver").value;
   const domain = document.getElementById("domain").value.trim();
   const email = document.getElementById("email").value || "admin@example.com";
-  const connections =
-    parseInt(document.getElementById("connections").value) || 0;
-  const workers = parseInt(document.getElementById("workers").value) || 0;
-  const availableMemory =
-    parseInt(document.getElementById("memory").value) || 0;
-  const cpuCores = parseInt(document.getElementById("cpu_cores").value) || 1;
+
+  // Sanitize and validate numeric inputs
+  const connections = sanitizeInput(
+    document.getElementById("connections").value,
+    INPUT_LIMITS.connections
+  );
+  const workers = sanitizeInput(
+    document.getElementById("workers").value,
+    INPUT_LIMITS.workers
+  );
+  const availableMemory = sanitizeInput(
+    document.getElementById("memory").value,
+    INPUT_LIMITS.memory
+  );
+  const cpuCores = sanitizeInput(
+    document.getElementById("cpu_cores").value,
+    INPUT_LIMITS.cpuCores
+  );
   const phpVersion = document.getElementById("php_version").value;
 
   if (!isValidDomain(domain)) {
@@ -58,20 +283,28 @@ function calculateAndUpdateUI() {
     return;
   }
 
-  let memoryPerWorker, memoryPerConnection, cpuPerConnection;
+  // Get server configuration from constants
+  const serverConfig = SERVER_CONFIGS[webserver];
+  if (!serverConfig) {
+    console.error(`Unknown webserver: ${webserver}`);
+    return;
+  }
+
   let recommendations = [];
   let config = "";
 
   // Adjust resource requirements if PHP is enabled
   const phpEnabled = phpVersion !== "none";
-  const phpMemoryOverhead = phpEnabled ? 20 : 0; // Additional 20MB per worker if PHP is enabled
-  const phpCpuOverhead = phpEnabled ? 0.05 : 0; // Additional 5% CPU usage per connection if PHP is enabled
+  const phpMemoryOverhead = phpEnabled ? PHP_CONFIG.memoryOverhead : 0;
+  const phpCpuOverhead = phpEnabled ? PHP_CONFIG.cpuOverhead : 0;
+
+  // Calculate base resource usage from constants
+  const memoryPerWorker = serverConfig.memoryPerWorker + phpMemoryOverhead;
+  const memoryPerConnection = serverConfig.memoryPerConnection;
+  const cpuPerConnection = serverConfig.cpuPerConnection + phpCpuOverhead;
 
   switch (webserver) {
     case "apache":
-      memoryPerWorker = 20 + phpMemoryOverhead;
-      memoryPerConnection = 0.5;
-      cpuPerConnection = 0.05 + phpCpuOverhead;
       recommendations = [
         `For Apache, consider using the event MPM for better scalability.`,
         `Optimize your Apache configuration by disabling unnecessary modules.`,
@@ -180,9 +413,6 @@ TraceEnable Off
       `;
       break;
     case "nginx":
-      memoryPerWorker = 10 + phpMemoryOverhead;
-      memoryPerConnection = 0.25;
-      cpuPerConnection = 0.025 + phpCpuOverhead;
       recommendations = [
         `Nginx is efficient for serving static content and as a reverse proxy.`,
         `Consider enabling Gzip compression for better performance.`,
@@ -276,9 +506,6 @@ http {
       `;
       break;
     case "lighttpd":
-      memoryPerWorker = 5 + phpMemoryOverhead;
-      memoryPerConnection = 0.2;
-      cpuPerConnection = 0.02 + phpCpuOverhead;
       recommendations = [
         `Lighttpd is great for serving static content on low-resource systems.`,
         `Consider using mod_magnet for more advanced request handling if needed.`,
@@ -357,9 +584,6 @@ $HTTP["host"] =~ "^(www\\.)?${domain.replace(/\./g, "\\.")}$" {
       `;
       break;
     case "caddy":
-      memoryPerWorker = 15 + phpMemoryOverhead;
-      memoryPerConnection = 0.3;
-      cpuPerConnection = 0.03 + phpCpuOverhead;
       recommendations = [
         `Caddy is designed for ease of use and automatic HTTPS.`,
         `The file_server directive is efficient for serving static content.`,
@@ -471,6 +695,25 @@ www.${domain} {
   document.getElementById("memory-usage").textContent = totalMemory.toFixed(2);
   document.getElementById("cpu-usage").textContent = totalCpu.toFixed(2);
 
+  // Update progress bars
+  const memoryPercent = Math.min(100, (totalMemory / availableMemory) * 100);
+  const memoryFill = document.getElementById("memory-fill");
+  if (memoryFill) {
+    memoryFill.style.width = `${memoryPercent}%`;
+    // Change color based on usage
+    memoryFill.className = `h-full rounded-full transition-all duration-500 ${
+      memoryPercent > 80 ? 'bg-red-500' : memoryPercent > 60 ? 'bg-yellow-500' : 'bg-blue-500'
+    }`;
+  }
+
+  const cpuFill = document.getElementById("cpu-fill");
+  if (cpuFill) {
+    cpuFill.style.width = `${totalCpu}%`;
+    cpuFill.className = `h-full rounded-full transition-all duration-500 ${
+      totalCpu > 80 ? 'bg-red-500' : totalCpu > 60 ? 'bg-yellow-500' : 'bg-green-500'
+    }`;
+  }
+
   const recommendationsElement = document.getElementById("recommendations");
   recommendationsElement.innerHTML = recommendations
     .map((rec) => `<p>• ${rec}</p>`)
@@ -480,31 +723,47 @@ www.${domain} {
 
   document.getElementById("results").classList.remove("hidden");
 
-  // Updated download functionality
+  // Updated download functionality with memory leak prevention
+  cleanupBlobUrl(); // Clean up previous blob URL
+
   const fileExtension = getConfigFileExtension(webserver);
   const blob = new Blob([config], { type: "text/plain;charset=utf-8" });
+  currentBlobUrl = URL.createObjectURL(blob);
+
   const downloadLink = document.createElement("a");
-  downloadLink.href = URL.createObjectURL(blob);
+  downloadLink.href = currentBlobUrl;
   downloadLink.download = `${webserver}_config.${fileExtension}`;
-  downloadLink.textContent = "Download";
+  downloadLink.setAttribute("aria-label", `Download ${serverConfig.displayName} configuration file`);
   downloadLink.classList.add(
-    "bg-blue-500",
-    "hover:bg-blue-600",
+    "inline-flex",
+    "items-center",
+    "gap-1.5",
+    "bg-blue-600",
+    "hover:bg-blue-700",
     "text-white",
     "font-semibold",
-    "py-1",
-    "px-3",
-    "rounded",
+    "py-2",
+    "px-4",
+    "rounded-lg",
     "text-sm",
-    "inline-block",
-    "transition",
-    "duration-300"
+    "transition-all",
+    "duration-200",
+    "shadow-sm",
+    "hover:shadow-md"
   );
+  // Add download icon
+  downloadLink.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>Download`;
 
   const downloadContainer = document.getElementById("download-container");
-  downloadContainer.innerHTML = "";
+  // Safe DOM manipulation - remove all children before adding new link
+  while (downloadContainer.firstChild) {
+    downloadContainer.removeChild(downloadContainer.firstChild);
+  }
   downloadContainer.appendChild(downloadLink);
 }
+
+// Cleanup blob URL when page is unloaded
+window.addEventListener("beforeunload", cleanupBlobUrl);
 
 // Add event listeners to all input fields
 document
@@ -532,6 +791,19 @@ document
 document
   .getElementById("php_version")
   .addEventListener("change", calculateAndUpdateUI);
+
+// Preset button event listeners
+document.getElementById("preset-small")?.addEventListener("click", () => applyPreset("small"));
+document.getElementById("preset-medium")?.addEventListener("click", () => applyPreset("medium"));
+document.getElementById("preset-large")?.addEventListener("click", () => applyPreset("large"));
+document.getElementById("preset-dedicated")?.addEventListener("click", () => applyPreset("dedicated"));
+
+// Copy and Share button event listeners
+document.getElementById("copy-config")?.addEventListener("click", copyConfigToClipboard);
+document.getElementById("share-config")?.addEventListener("click", shareConfig);
+
+// Load settings from URL on page load
+loadFromUrl();
 
 // Initial calculation
 calculateAndUpdateUI();

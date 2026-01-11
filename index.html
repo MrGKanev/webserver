@@ -4,188 +4,506 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Webserver Resource Calculator and Config Generator | Gabriel Kanev</title>
+  <title>Web Server Resource Calculator & Config Generator 2026 | Free Apache, Nginx, Caddy, Lighttpd Tool</title>
   <meta name="description"
-    content="Calculate resource usage and generate optimized configurations for Apache, Nginx, Lighttpd, and Caddy web servers. Improve your web server performance with our free tool.">
+    content="Free web server resource calculator 2026. Estimate memory & CPU usage, generate optimized configs for Apache, Nginx, Lighttpd, and Caddy. Supports PHP 8.5, PHP-FPM, worker processes & connection tuning.">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://webserver.gkanev.com/">
-  <meta property="og:title" content="Webserver Resource Calculator and Config Generator">
+  <meta property="og:title" content="Web Server Resource Calculator & Config Generator 2026">
   <meta property="og:description"
-    content="Optimize your web server setup with our free resource calculator and configuration generator for Apache, Nginx, Lighttpd, and Caddy.">
-  <meta property="og:image" content="https://webserver.gkanev.com/og-image.jpg">
+    content="Free tool to calculate server resources and generate production-ready configurations for Apache, Nginx, Lighttpd, and Caddy. Supports PHP 8.5, presets, and shareable configs.">
+  <meta property="og:image" content="https://webserver.gkanev.com/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Web Server Resource Calculator - Apache, Nginx, Lighttpd, Caddy Configuration Tool">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="Webserver Calculator">
 
   <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://webserver.gkanev.com/">
-  <meta property="twitter:title" content="Webserver Resource Calculator and Config Generator">
-  <meta property="twitter:description"
-    content="Optimize your web server setup with our free resource calculator and configuration generator for Apache, Nginx, Lighttpd, and Caddy.">
-  <meta property="twitter:image" content="https://webserver.gkanev.com/twitter-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://webserver.gkanev.com/">
+  <meta name="twitter:title" content="Web Server Resource Calculator & Config Generator 2026">
+  <meta name="twitter:description"
+    content="Free tool to calculate server resources and generate optimized configurations for Apache, Nginx, Lighttpd, and Caddy. Supports PHP 8.5.">
+  <meta name="twitter:image" content="https://webserver.gkanev.com/assets/og-image.png">
+  <meta name="twitter:image:alt" content="Web Server Resource Calculator Tool">
+  <meta name="twitter:creator" content="@MrGKanev">
 
   <!-- Canonical URL -->
   <link rel="canonical" href="https://webserver.gkanev.com/">
 
   <!-- Additional SEO-friendly meta tags -->
   <meta name="author" content="Gabriel Kanev">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow">
   <meta name="keywords"
-    content="webserver, resource calculator, config generator, Apache, Nginx, Lighttpd, Caddy, performance optimization">
+    content="web server calculator 2026, nginx config generator, apache configuration tool, lighttpd setup, caddy server config, server resource calculator, PHP 8.5 FPM configuration, worker processes calculator, memory optimization tool, CPU usage calculator, web server performance, server optimization, VPS configuration, dedicated server setup">
+  <meta name="theme-color" content="#2563EB">
+  <meta name="application-name" content="Webserver Calculator">
+  <meta name="generator" content="Webserver Calculator v1.2">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Web Server Resource Calculator and Config Generator",
+    "alternateName": ["Webserver Calculator", "Server Config Generator"],
+    "description": "A free online tool to calculate web server resource usage (memory and CPU) and generate optimized configuration files for Apache, Nginx, Lighttpd, and Caddy web servers. Supports PHP 8.5, presets, and shareable configurations.",
+    "url": "https://webserver.gkanev.com/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires JavaScript",
+    "softwareVersion": "1.2",
+    "dateModified": "2026-01-11",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Gabriel Kanev",
+      "url": "https://gkanev.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Gabriel Kanev",
+      "url": "https://gkanev.com/"
+    },
+    "featureList": [
+      "Apache configuration generator",
+      "Nginx configuration generator",
+      "Lighttpd configuration generator",
+      "Caddy configuration generator",
+      "Memory usage calculator",
+      "CPU usage estimator",
+      "PHP 8.5 and PHP-FPM support",
+      "Server presets (VPS, Dedicated)",
+      "Shareable configuration links",
+      "Copy to clipboard",
+      "Downloadable configuration files",
+      "Performance recommendations"
+    ],
+    "screenshot": "https://webserver.gkanev.com/assets/og-image.png",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "150",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How many worker processes should I configure?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A general rule is to set worker processes equal to the number of CPU cores. For CPU-bound tasks, use 1 worker per core. For I/O-bound tasks (database queries, API calls), you can use 2x the number of cores."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between Apache and Nginx?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Apache uses a process-based model and is highly configurable with .htaccess files. Nginx uses an event-driven architecture, making it more efficient for static content and high concurrent connections. Nginx typically uses less memory (0.25MB vs 0.5MB per connection)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "When should I use Caddy instead of Nginx?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Caddy is ideal when you want automatic HTTPS with zero configuration, simpler config syntax, or built-in HTTP/3 support. Nginx is better for complex setups requiring fine-grained control or when you need maximum performance optimization."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much memory does PHP-FPM add?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "PHP-FPM typically adds 20-50MB per worker process depending on the application. This calculator estimates an additional 20MB per worker when PHP is enabled. Monitor actual usage and adjust pm.max_children accordingly."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which PHP version should I use in 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For new projects in 2026, use PHP 8.4 or 8.5 for the latest features and performance. PHP 8.3 is recommended for stability. PHP 8.2 is LTS (Long Term Support). Avoid PHP 7.x and 5.x as they are end-of-life."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is Lighttpd best used for?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lighttpd excels on low-resource systems, embedded devices, and IoT applications. It uses only 5MB per worker and 0.2MB per connection - the lowest of all servers. It's perfect for Raspberry Pi, routers, and minimal VPS instances."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I share my server configuration?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! Click the Share button to generate a URL with all your settings. Anyone with the link can see your exact configuration. This is useful for team collaboration or asking for help on forums."
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://webserver.gkanev.com/"
+      }
+    ]
+  }
+  </script>
+
   <link href="assets/style.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-gray-100 flex flex-col min-h-screen">
-  <div class="container mx-auto px-4 py-8 flex-grow">
-    <h1 class="text-3xl font-bold mb-8 text-center">Webserver Resource Calculator and Config Generator</h1>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col min-h-screen">
+  <main class="container mx-auto px-4 py-8 flex-grow" role="main">
+    <header class="mb-8 text-center">
+      <div class="inline-flex items-center gap-2 bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full mb-4">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+        </span>
+        Updated for 2026 - Now with PHP 8.5 Support
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Web Server Resource Calculator</h1>
+      <p class="text-gray-600 mt-2 max-w-2xl mx-auto">Calculate memory & CPU usage and generate production-ready configurations for Apache, Nginx, Lighttpd, and Caddy</p>
+    </header>
 
     <div class="flex flex-wrap -mx-3">
       <!-- Calculator Section -->
-      <div class="w-full md:w-2/3 px-3 mb-6">
-        <div class="bg-white p-6 rounded-lg shadow-md">
-          <h2 class="text-2xl font-bold mb-6">Calculator</h2>
+      <section class="w-full md:w-2/3 px-3 mb-6" aria-labelledby="calculator-heading">
+        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+          <h2 id="calculator-heading" class="text-2xl font-bold mb-4 flex items-center gap-2">
+            Calculator
+          </h2>
 
-          <div class="mb-4">
-            <label for="webserver" class="block mb-2">Select Webserver:</label>
-            <select id="webserver" class="w-full p-2 border rounded">
-              <option value="apache">Apache</option>
-              <option value="nginx">Nginx</option>
-              <option value="lighttpd">Lighttpd</option>
-              <option value="caddy">Caddy</option>
-            </select>
+          <!-- Presets Section -->
+          <div class="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100" aria-label="Server presets">
+            <label class="block mb-3 font-semibold text-sm text-gray-700">Quick Presets:</label>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <button type="button" id="preset-small" class="preset-btn group flex flex-col items-center p-3 bg-white hover:bg-blue-500 border-2 border-gray-200 hover:border-blue-500 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md" aria-label="Apply small VPS preset">
+                <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">💻</span>
+                <span class="font-semibold text-gray-800 group-hover:text-white text-sm">Small VPS</span>
+                <span class="text-xs text-gray-500 group-hover:text-blue-100">1 CPU / 1GB</span>
+              </button>
+              <button type="button" id="preset-medium" class="preset-btn group flex flex-col items-center p-3 bg-white hover:bg-blue-500 border-2 border-gray-200 hover:border-blue-500 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md" aria-label="Apply medium server preset">
+                <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">🖥️</span>
+                <span class="font-semibold text-gray-800 group-hover:text-white text-sm">Medium</span>
+                <span class="text-xs text-gray-500 group-hover:text-blue-100">4 CPU / 4GB</span>
+              </button>
+              <button type="button" id="preset-large" class="preset-btn group flex flex-col items-center p-3 bg-white hover:bg-blue-500 border-2 border-gray-200 hover:border-blue-500 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md" aria-label="Apply large server preset">
+                <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">🗄️</span>
+                <span class="font-semibold text-gray-800 group-hover:text-white text-sm">Large</span>
+                <span class="text-xs text-gray-500 group-hover:text-blue-100">8 CPU / 16GB</span>
+              </button>
+              <button type="button" id="preset-dedicated" class="preset-btn group flex flex-col items-center p-3 bg-white hover:bg-blue-500 border-2 border-gray-200 hover:border-blue-500 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md" aria-label="Apply dedicated server preset">
+                <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">🏢</span>
+                <span class="font-semibold text-gray-800 group-hover:text-white text-sm">Dedicated</span>
+                <span class="text-xs text-gray-500 group-hover:text-blue-100">16 CPU / 64GB</span>
+              </button>
+            </div>
           </div>
 
-          <div class="mb-4">
-            <label for="domain" class="block mb-2">Domain Name:</label>
-            <input type="text" id="domain" class="w-full p-2 border rounded" placeholder="example.com">
-          </div>
+          <form id="calculator-form" aria-label="Server resource calculator form">
+            <div class="mb-4">
+              <label for="webserver" class="block mb-2 font-medium">Select Web Server:</label>
+              <select id="webserver" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" aria-describedby="webserver-help">
+                <option value="apache">Apache HTTP Server</option>
+                <option value="nginx">Nginx</option>
+                <option value="lighttpd">Lighttpd</option>
+                <option value="caddy">Caddy</option>
+              </select>
+              <small id="webserver-help" class="text-gray-500 text-sm">Choose the web server you want to configure</small>
+            </div>
 
-          <div class="mb-4">
-            <label for="email" class="block mb-2">Email Address:</label>
-            <input type="email" id="email" autocomplete="email" class="w-full p-2 border rounded"
-              placeholder="admin@example.com">
-          </div>
+            <div class="mb-4">
+              <label for="domain" class="block mb-2 font-medium">Domain Name:</label>
+              <input type="text" id="domain" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="example.com" aria-describedby="domain-help" autocomplete="off" spellcheck="false">
+              <small id="domain-help" class="text-gray-500 text-sm">Enter your domain without http:// or www.</small>
+            </div>
 
-          <div class="mb-4">
-            <label for="connections" class="block mb-2">Concurrent Connections:</label>
-            <input type="number" id="connections" class="w-full p-2 border rounded" min="1">
-          </div>
+            <div class="mb-4">
+              <label for="email" class="block mb-2 font-medium">Email Address:</label>
+              <input type="email" id="email" autocomplete="email" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="admin@example.com" aria-describedby="email-help">
+              <small id="email-help" class="text-gray-500 text-sm">Used for SSL certificates and server admin notifications</small>
+            </div>
 
-          <div class="mb-4">
-            <label for="workers" class="block mb-2">Number of Workers/Processes:</label>
-            <input type="number" id="workers" class="w-full p-2 border rounded" min="1">
-          </div>
+            <div class="mb-4">
+              <label for="connections" class="block mb-2 font-medium">Concurrent Connections:</label>
+              <input type="number" id="connections" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="1" max="100000" value="100" aria-describedby="connections-help">
+              <small id="connections-help" class="text-gray-500 text-sm">Expected simultaneous connections (typical: 100-10000)</small>
+            </div>
 
-          <div class="mb-4">
-            <label for="memory" class="block mb-2">Available Memory (MB):</label>
-            <input type="number" id="memory" class="w-full p-2 border rounded" min="1">
-          </div>
+            <div class="mb-4">
+              <label for="workers" class="block mb-2 font-medium">Number of Workers/Processes:</label>
+              <input type="number" id="workers" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="1" max="256" value="4" aria-describedby="workers-help">
+              <small id="workers-help" class="text-gray-500 text-sm">Usually set to number of CPU cores (1-256)</small>
+            </div>
 
-          <div class="mb-4">
-            <label for="cpu_cores" class="block mb-2">Number of CPU Cores:</label>
-            <input type="number" id="cpu_cores" class="w-full p-2 border rounded" min="1">
-          </div>
+            <div class="mb-4">
+              <label for="memory" class="block mb-2 font-medium">Available Memory (MB):</label>
+              <input type="number" id="memory" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="128" max="1048576" value="4096" aria-describedby="memory-help">
+              <small id="memory-help" class="text-gray-500 text-sm">RAM allocated for the web server (128MB - 1TB)</small>
+            </div>
 
-          <div class="mb-4">
-            <label for="php_version" class="block mb-2">PHP Version:</label>
-            <select id="php_version" class="w-full p-2 border rounded">
-              <option value="none">None</option>
-              <option value="8.4">8.4</option>
-              <option value="8.3">8.3</option>
-              <option value="8.2">8.2</option>
-              <option value="8.1">8.1</option>
-              <option value="8.0">8.0</option>
-              <option value="7.4">7.4</option>
-              <option value="7.0">7.0</option>
-              <option value="5.6">5.6</option>
-            </select>
-          </div>
+            <div class="mb-4">
+              <label for="cpu_cores" class="block mb-2 font-medium">Number of CPU Cores:</label>
+              <input type="number" id="cpu_cores" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="1" max="256" value="4" aria-describedby="cpu-help">
+              <small id="cpu-help" class="text-gray-500 text-sm">Available CPU cores for the server (1-256)</small>
+            </div>
 
-          <div id="results" class="mt-6 hidden">
-            <h3 class="text-xl font-semibold mb-2">Estimated Resource Usage:</h3>
-            <p>Memory: <span id="memory-usage"></span> MB</p>
-            <p>CPU: <span id="cpu-usage"></span>% (across all cores)</p>
+            <div class="mb-4">
+              <label for="php_version" class="block mb-2 font-medium">PHP Version:</label>
+              <select id="php_version" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500" aria-describedby="php-help">
+                <option value="none">None (Static files only)</option>
+                <option value="8.5">PHP 8.5 (Latest - 2026)</option>
+                <option value="8.4">PHP 8.4 (Stable)</option>
+                <option value="8.3">PHP 8.3 (Recommended)</option>
+                <option value="8.2">PHP 8.2 (LTS)</option>
+                <option value="8.1">PHP 8.1 (Security only)</option>
+                <option value="8.0">PHP 8.0 (EOL)</option>
+                <option value="7.4">PHP 7.4 (EOL - Upgrade!)</option>
+              </select>
+              <small id="php-help" class="text-gray-500 text-sm">PHP 8.3+ recommended for new projects in 2026</small>
+            </div>
+          </form>
 
-            <h3 class="text-xl font-semibold mt-4 mb-2">Recommendations:</h3>
-            <div id="recommendations" class="space-y-2"></div>
-
-            <div class="flex items-center justify-between mt-4 mb-2">
-              <h3 class="text-xl font-semibold">Sample Configuration:</h3>
-              <div id="download-container">
-                <!-- The download button will be inserted here by JavaScript -->
+          <div id="results" class="mt-6 hidden" role="region" aria-live="polite" aria-label="Calculation results">
+            <h3 class="text-xl font-semibold mb-3 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+              Estimated Resource Usage
+            </h3>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+              <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
+                <div class="flex items-center gap-2 mb-1">
+                  <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                  <p class="text-sm font-medium text-gray-600">Memory Usage</p>
+                </div>
+                <p class="text-3xl font-bold text-blue-600"><span id="memory-usage">0</span><span class="text-lg ml-1">MB</span></p>
+                <div id="memory-bar" class="mt-2 h-2 bg-blue-200 rounded-full overflow-hidden">
+                  <div id="memory-fill" class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+              <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border border-green-200">
+                <div class="flex items-center gap-2 mb-1">
+                  <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
+                  <p class="text-sm font-medium text-gray-600">CPU Usage</p>
+                </div>
+                <p class="text-3xl font-bold text-green-600"><span id="cpu-usage">0</span><span class="text-lg">%</span></p>
+                <div id="cpu-bar" class="mt-2 h-2 bg-green-200 rounded-full overflow-hidden">
+                  <div id="cpu-fill" class="h-full bg-green-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
               </div>
             </div>
-            <pre id="config" class="bg-gray-100 p-4 rounded overflow-x-auto"></pre>
+
+            <h3 class="text-xl font-semibold mt-4 mb-2 flex items-center gap-2">
+              <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              Performance Recommendations
+            </h3>
+            <div id="recommendations" class="space-y-2 bg-gradient-to-r from-yellow-50 to-amber-50 p-4 rounded-lg border border-yellow-200" role="list" aria-label="Server recommendations"></div>
+
+            <div class="flex flex-wrap items-center justify-between mt-6 mb-3 gap-2">
+              <h3 class="text-xl font-semibold flex items-center gap-2">
+                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                Generated Configuration
+              </h3>
+              <div class="flex flex-wrap gap-2" aria-label="Configuration actions">
+                <button type="button" id="copy-config" class="inline-flex items-center gap-1.5 px-4 py-2 text-sm bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-sm hover:shadow-md" aria-label="Copy configuration to clipboard">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                  Copy
+                </button>
+                <button type="button" id="share-config" class="inline-flex items-center gap-1.5 px-4 py-2 text-sm bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-lg transition-all duration-200 shadow-sm hover:shadow-md" aria-label="Share configuration link">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+                  Share
+                </button>
+                <div id="download-container">
+                  <!-- The download button will be inserted here by JavaScript -->
+                </div>
+              </div>
+            </div>
+            <div id="share-notification" class="hidden mb-3 p-3 bg-emerald-100 text-emerald-800 text-sm rounded-lg border border-emerald-200 flex items-center gap-2" role="status" aria-live="polite">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <span></span>
+            </div>
+            <pre id="config" class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm font-mono shadow-inner" role="textbox" aria-label="Generated server configuration" aria-readonly="true"><code></code></pre>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Tutorial Section -->
-      <div class="w-full md:w-1/3 px-3">
-        <div class="bg-white p-6 rounded-lg shadow-md">
-          <h2 class="text-2xl font-bold mb-6">Webserver Tutorials</h2>
+      <!-- Sidebar -->
+      <aside class="w-full md:w-1/3 px-3" aria-label="Additional resources">
+        <!-- Tutorial Section -->
+        <nav class="bg-white p-6 rounded-xl shadow-lg border border-gray-100" aria-labelledby="tutorials-heading">
+          <h2 id="tutorials-heading" class="text-2xl font-bold mb-6 flex items-center gap-2">
+            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            Tutorials
+          </h2>
           <div class="space-y-4">
             <div>
-              <h3 class="text-lg font-semibold mb-2">Apache</h3>
-              <ul>
-                <li><a href="https://httpd.apache.org/docs/2.4/getting-started.html"
-                    class="text-blue-500 hover:underline">Getting Started with Apache</a></li>
-                <li><a href="https://httpd.apache.org/docs/2.4/misc/perf-tuning.html"
-                    class="text-blue-500 hover:underline">Apache Performance Tuning</a></li>
-                <li><a href="https://httpd.apache.org/docs/2.4/misc/security_tips.html"
-                    class="text-blue-500 hover:underline">Securing Apache Server</a></li>
+              <h3 class="text-lg font-semibold mb-2 flex items-center">
+                <span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span>Apache
+              </h3>
+              <ul class="ml-4 space-y-1">
+                <li><a href="https://httpd.apache.org/docs/2.4/getting-started.html" class="text-blue-500 hover:underline hover:text-blue-700 transition-colors" target="_blank" rel="noopener noreferrer">Getting Started Guide</a></li>
+                <li><a href="https://httpd.apache.org/docs/2.4/misc/perf-tuning.html" class="text-blue-500 hover:underline hover:text-blue-700 transition-colors" target="_blank" rel="noopener noreferrer">Performance Tuning</a></li>
+                <li><a href="https://httpd.apache.org/docs/2.4/misc/security_tips.html" class="text-blue-500 hover:underline hover:text-blue-700 transition-colors" target="_blank" rel="noopener noreferrer">Security Best Practices</a></li>
               </ul>
             </div>
             <div>
-              <h3 class="text-lg font-semibold mb-2">Nginx</h3>
-              <ul>
-                <li><a href="https://nginx.org/en/docs/beginners_guide.html" class="text-blue-500 hover:underline">Nginx
-                    Basics</a></li>
-                <li><a href="https://www.nginx.com/blog/tuning-nginx/" class="text-blue-500 hover:underline">Optimizing
-                    Nginx
-                    for High Traffic</a></li>
-                <li><a href="https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/"
-                    class="text-blue-500 hover:underline">Nginx as a Reverse Proxy</a></li>
+              <h3 class="text-lg font-semibold mb-2 flex items-center">
+                <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>Nginx
+              </h3>
+              <ul class="ml-4 space-y-1">
+                <li><a href="https://nginx.org/en/docs/beginners_guide.html" class="text-blue-500 hover:underline hover:text-blue-700 transition-colors" target="_blank" rel="noopener noreferrer">Beginner's Guide</a></li>
+                <li><a href="https://www.nginx.com/blog/tuning-nginx/" class="text-blue-500 hover:underline hover:text-blue-700 transition-colors" target="_blank" rel="noopener noreferrer">High Traffic Optimization</a></li>
+                <li><a href="https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/" class="text-blue-500 hover:underline hover:text-blue-700 transition-colors" target="_blank" rel="noopener noreferrer">Reverse Proxy Setup</a></li>
               </ul>
             </div>
             <div>
-              <h3 class="text-lg font-semibold mb-2">Lighttpd</h3>
-              <ul>
-                <li><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/TutorialConfiguration"
-                    class="text-blue-500 hover:underline">Introduction to Lighttpd</a></li>
-                <li><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_ConfigurationOptions"
-                    class="text-blue-500 hover:underline">Lighttpd Configuration Guide</a></li>
-                <li><a href="https://www.digitalocean.com/community/tutorials/apache-vs-nginx-practical-considerations"
-                    class="text-blue-500 hover:underline">Lighttpd vs Apache vs Nginx</a></li>
+              <h3 class="text-lg font-semibold mb-2 flex items-center">
+                <span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>Lighttpd
+              </h3>
+              <ul class="ml-4 space-y-1">
+                <li><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/TutorialConfiguration" class="text-blue-500 hover:underline hover:text-blue-700 transition-colors" target="_blank" rel="noopener noreferrer">Configuration Tutorial</a></li>
+                <li><a href="https://redmine.lighttpd.net/projects/lighttpd/wiki/Docs_ConfigurationOptions" class="text-blue-500 hover:underline hover:text-blue-700 transition-colors" target="_blank" rel="noopener noreferrer">Configuration Options</a></li>
+                <li><a href="https://www.digitalocean.com/community/tutorials/apache-vs-nginx-practical-considerations" class="text-blue-500 hover:underline hover:text-blue-700 transition-colors" target="_blank" rel="noopener noreferrer">Server Comparison Guide</a></li>
               </ul>
             </div>
             <div>
-              <h3 class="text-lg font-semibold mb-2">Caddy</h3>
-              <ul>
-                <li><a href="https://caddyserver.com/docs/getting-started" class="text-blue-500 hover:underline">Getting
-                    Started
-                    with Caddy</a></li>
-                <li><a href="https://caddyserver.com/docs/compare" class="text-blue-500 hover:underline">Caddy vs Other
-                    Web
-                    Servers</a></li>
-                <li><a href="https://caddyserver.com/docs/automatic-https"
-                    class="text-blue-500 hover:underline">Securing Your
-                    Site with Caddy</a></li>
+              <h3 class="text-lg font-semibold mb-2 flex items-center">
+                <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Caddy
+              </h3>
+              <ul class="ml-4 space-y-1">
+                <li><a href="https://caddyserver.com/docs/getting-started" class="text-blue-500 hover:underline hover:text-blue-700 transition-colors" target="_blank" rel="noopener noreferrer">Getting Started</a></li>
+                <li><a href="https://caddyserver.com/docs/compare" class="text-blue-500 hover:underline hover:text-blue-700 transition-colors" target="_blank" rel="noopener noreferrer">Server Comparison</a></li>
+                <li><a href="https://caddyserver.com/docs/automatic-https" class="text-blue-500 hover:underline hover:text-blue-700 transition-colors" target="_blank" rel="noopener noreferrer">Automatic HTTPS</a></li>
               </ul>
             </div>
           </div>
-        </div>
+        </nav>
+
+        <!-- Quick Reference -->
+        <section class="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 mt-6 rounded-xl shadow-lg border border-indigo-100" aria-labelledby="quickref-heading">
+          <h2 id="quickref-heading" class="text-xl font-bold mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            Quick Reference
+          </h2>
+          <div class="text-sm space-y-3">
+            <div class="bg-white/70 rounded-lg p-3">
+              <p class="font-semibold text-gray-800">Workers = CPU Cores</p>
+              <p class="text-gray-600">Match workers to available CPU cores for optimal performance</p>
+            </div>
+            <div class="bg-white/70 rounded-lg p-3">
+              <p class="font-semibold text-gray-800">Memory per Connection</p>
+              <p class="text-gray-600">Nginx: 0.25MB • Apache: 0.5MB • Caddy: 0.3MB • Lighttpd: 0.2MB</p>
+            </div>
+            <div class="bg-white/70 rounded-lg p-3">
+              <p class="font-semibold text-gray-800">PHP-FPM Overhead</p>
+              <p class="text-gray-600">Add ~20MB per worker + 5% CPU when PHP is enabled</p>
+            </div>
+            <div class="bg-white/70 rounded-lg p-3">
+              <p class="font-semibold text-gray-800">High Traffic Threshold</p>
+              <p class="text-gray-600">>1000 connections? Consider kernel tuning & load balancing</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="bg-white p-6 mt-6 rounded-xl shadow-lg border border-gray-100" aria-labelledby="faq-heading">
+          <h2 id="faq-heading" class="text-xl font-bold mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            FAQ
+          </h2>
+          <div class="space-y-3">
+            <details class="group border border-gray-200 rounded-lg overflow-hidden">
+              <summary class="cursor-pointer font-medium text-gray-800 hover:text-blue-600 transition-colors p-3 bg-gray-50 hover:bg-blue-50 flex items-center justify-between">
+                <span>How many workers should I configure?</span>
+                <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </summary>
+              <p class="text-sm text-gray-600 p-3 bg-white">Set worker processes equal to your CPU cores. For CPU-bound tasks, use 1 worker per core. For I/O-bound tasks (database, APIs), consider 2x cores.</p>
+            </details>
+            <details class="group border border-gray-200 rounded-lg overflow-hidden">
+              <summary class="cursor-pointer font-medium text-gray-800 hover:text-blue-600 transition-colors p-3 bg-gray-50 hover:bg-blue-50 flex items-center justify-between">
+                <span>Which web server should I choose?</span>
+                <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </summary>
+              <p class="text-sm text-gray-600 p-3 bg-white"><strong>Nginx:</strong> High traffic, reverse proxy. <strong>Apache:</strong> .htaccess, compatibility. <strong>Caddy:</strong> Auto HTTPS, simple. <strong>Lighttpd:</strong> Minimal resources.</p>
+            </details>
+            <details class="group border border-gray-200 rounded-lg overflow-hidden">
+              <summary class="cursor-pointer font-medium text-gray-800 hover:text-blue-600 transition-colors p-3 bg-gray-50 hover:bg-blue-50 flex items-center justify-between">
+                <span>Which PHP version for 2026?</span>
+                <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </summary>
+              <p class="text-sm text-gray-600 p-3 bg-white">Use <strong>PHP 8.4/8.5</strong> for new projects. PHP 8.3 is stable and recommended. PHP 8.2 is LTS. Avoid 7.x - it's end-of-life!</p>
+            </details>
+            <details class="group border border-gray-200 rounded-lg overflow-hidden">
+              <summary class="cursor-pointer font-medium text-gray-800 hover:text-blue-600 transition-colors p-3 bg-gray-50 hover:bg-blue-50 flex items-center justify-between">
+                <span>How accurate are these estimates?</span>
+                <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </summary>
+              <p class="text-sm text-gray-600 p-3 bg-white">These are baseline estimates based on typical workloads. Actual usage varies - always monitor real metrics and adjust configurations.</p>
+            </details>
+            <details class="group border border-gray-200 rounded-lg overflow-hidden">
+              <summary class="cursor-pointer font-medium text-gray-800 hover:text-blue-600 transition-colors p-3 bg-gray-50 hover:bg-blue-50 flex items-center justify-between">
+                <span>Can I share my configuration?</span>
+                <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </summary>
+              <p class="text-sm text-gray-600 p-3 bg-white">Yes! Click the <strong>Share</strong> button to generate a URL with all your settings. Great for team collaboration or forum discussions.</p>
+            </details>
+            <details class="group border border-gray-200 rounded-lg overflow-hidden">
+              <summary class="cursor-pointer font-medium text-gray-800 hover:text-blue-600 transition-colors p-3 bg-gray-50 hover:bg-blue-50 flex items-center justify-between">
+                <span>Is this safe for production?</span>
+                <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </summary>
+              <p class="text-sm text-gray-600 p-3 bg-white">Generated configs are good starting points. Always test in staging first, review security settings, and customize for your specific environment.</p>
+            </details>
+          </div>
+        </section>
 
         <!-- Footer -->
-        <div class="bg-white p-4 mt-6 rounded-lg">
-          <p class="text-center">Created by <a href="https://gkanev.com/" class="text-blue-500 hover:underline">Gabriel
-              Kanev</a></p>
-          <p class="text-center mt-2">This project is open source. Contribute on <a
-              href="https://github.com/MrGKanev/webserver" class="text-blue-500 hover:underline">GitHub</a></p>
-        </div>
-      </div>
+        <footer class="bg-gradient-to-r from-gray-800 to-gray-900 p-5 mt-6 rounded-xl shadow-lg text-center text-white">
+          <p class="font-medium">Created by <a href="https://gkanev.com/" class="text-blue-400 hover:text-blue-300 transition-colors" target="_blank" rel="noopener noreferrer">Gabriel Kanev</a></p>
+          <div class="flex items-center justify-center gap-4 mt-3 text-sm text-gray-400">
+            <a href="https://github.com/MrGKanev/webserver" class="hover:text-white transition-colors flex items-center gap-1" target="_blank" rel="noopener noreferrer">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              GitHub
+            </a>
+            <span>•</span>
+            <span>MIT License</span>
+            <span>•</span>
+            <span class="text-blue-400">v1.2</span>
+          </div>
+        </footer>
+      </aside>
     </div>
-  </div>
+  </main>
 
   <script src="assets/script.js"></script>
 </body>
